@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>I’m sorry</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--a:#3fb6c9;--b:#bfeef5;--deep:#1a7a8f;--glass:#ffffff90;--line:#1f6f8b33;--txt:#123a4f;--mute:#4a7184;--w1:#4fb3c4;--w2:#86cdd8;--w3:#bde6ec}
+body[data-who=unnathi]{--a:#f2879f;--b:#ffe1e8;--deep:#b8466a;--w1:#f2a0b2;--w2:#f8c3cf;--w3:#fde0e6}
+*{box-sizing:border-box;margin:0}
+body{font-family:'DM Sans',system-ui,sans-serif;color:var(--txt);line-height:1.7;overflow-x:hidden;
+  background:linear-gradient(180deg,#e8f8ff,#cdeef4 55%,var(--b));background-attachment:fixed;transition:background 1.2s}
+body.dawn{background:linear-gradient(180deg,#fff3d9,#ffd9c2 60%,#ffc6bd);background-attachment:fixed}
+#sky{position:fixed;inset:0;z-index:0;pointer-events:none}
+#sky i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;animation:tw 4s ease-in-out infinite}
+@keyframes tw{50%{opacity:.15}}
+main{position:relative;z-index:1}
+section{max-width:720px;margin:0 auto;padding:56px 22px}
+button{font:inherit;color:inherit}
+button:focus-visible,input:focus-visible{outline:3px solid var(--b);outline-offset:3px}
+
+/* person switch */
+.who{position:sticky;top:0;z-index:20;display:flex;justify-content:center;padding:max(14px,env(safe-area-inset-top)) 0 10px;backdrop-filter:blur(12px);background:#ffffff70}
+.who div{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--glass)}
+.who button{border:0;background:none;padding:8px 20px;border-radius:999px;cursor:pointer;font-weight:500;color:var(--mute);transition:.3s}
+.who button[aria-selected=true]{background:linear-gradient(135deg,var(--a),var(--b));color:#0f3446}
+
+/* 3D hero */
+.scene{perspective:900px;height:min(78vh,560px);position:relative;display:grid;place-items:center;overflow:hidden;touch-action:pan-y}
+.world{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .2s}
+.layer{position:absolute;inset:0;transform-style:preserve-3d}
+.moon{position:absolute;left:50%;top:8%;width:min(46vw,220px);aspect-ratio:1;border-radius:50%;translate:-50% 0;background:radial-gradient(circle at 40% 35%,#fffbe8,#ffe3a1 55%,#ffb98a);box-shadow:0 0 90px 30px #ffd9a077,0 0 220px 80px #ffe8c466;transform:translateZ(-120px)}
+.hill{position:absolute;left:-10%;right:-10%;border-radius:50% 50% 0 0/100% 100% 0 0}
+.h1{bottom:-12%;height:38%;background:var(--w1);transform:translateZ(60px)}
+.h2{bottom:-8%;height:34%;background:var(--w2);transform:translateZ(0)}
+.h3{bottom:0;height:30%;background:var(--w3);transform:translateZ(-60px)}
+.hero-txt{position:relative;text-align:center;transform:translateZ(120px);padding:0 16px;margin-top:20%}
+.hero-txt p{color:var(--mute);letter-spacing:.02em}
+h1{font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;font-size:clamp(3.2rem,15vw,6.4rem);line-height:1;
+  text-shadow:0 4px 40px color-mix(in srgb,var(--a) 60%,transparent)}
+h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(1.8rem,6vw,2.4rem);line-height:1.15;margin-bottom:6px}
+.lead{color:var(--mute);margin-bottom:22px;max-width:34em}
+
+/* constellation */
+.sky-box{position:relative;height:330px;border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,#ffffffb0,var(--w3) 70%,var(--w2));overflow:hidden}
+.sky-box svg{position:absolute;inset:0;width:100%;height:100%}
+.sky-box line{stroke:var(--deep);stroke-width:1.5;vector-effect:non-scaling-stroke;stroke-dasharray:400;stroke-dashoffset:400;animation:draw 1s forwards;opacity:.8}
+@keyframes draw{to{stroke-dashoffset:0}}
+.star{position:absolute;width:44px;height:44px;translate:-50% -50%;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+.star::before{content:"";width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#eef7f9 60%,#bcd8de);box-shadow:0 3px 12px 2px color-mix(in srgb,var(--a) 60%,transparent);animation:pulse 2.4s ease-in-out infinite}
+.star.found::before{background:radial-gradient(circle at 35% 30%,#fff,var(--b) 60%,var(--a));width:18px;height:18px;animation:none;box-shadow:0 3px 18px 6px color-mix(in srgb,var(--a) 65%,transparent)}
+@keyframes pulse{50%{scale:1.6;opacity:.7}}
+.note{margin-top:14px;min-height:4.4em;padding:16px 20px;border-radius:20px;border:1px solid var(--line);background:var(--glass);font-family:'Instrument Serif',serif;font-style:italic;font-size:1.35rem;line-height:1.35}
+.count{margin-top:10px;color:var(--mute);font-size:.9rem}
+
+/* letter */
+.lwrap{position:relative;perspective:1100px}
+.card{transform-style:preserve-3d;transition:transform .15s,filter .8s;padding:clamp(24px,6vw,44px);border-radius:28px;
+  background:linear-gradient(150deg,#ffffffd0,#ffffff80);border:1px solid var(--line);box-shadow:0 30px 70px #1f6f8b33}
+.card.locked{filter:blur(9px);pointer-events:none;user-select:none}
+.card h2{transform:translateZ(40px)}
+.card p.body{font-size:1.06rem;min-height:12em;white-space:pre-wrap;transform:translateZ(20px)}
+.sign{margin-top:16px;font-family:'Instrument Serif',serif;font-style:italic;font-size:1.5rem;color:var(--deep);transform:translateZ(30px)}
+.lock{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-family:'Instrument Serif',serif;font-style:italic;font-size:1.5rem;pointer-events:none;transition:opacity .6s}
+.lock.gone{opacity:0}
+
+/* meter */
+.meter{padding:26px;border:1px solid var(--line);border-radius:28px;background:var(--glass)}
+input[type=range]{width:100%;appearance:none;height:10px;border-radius:99px;background:linear-gradient(90deg,var(--a),var(--b)) 0/var(--p,0%) 100% no-repeat,#1f6f8b22;margin:22px 0 10px}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:30px;height:30px;border-radius:50%;background:#fff;box-shadow:0 0 calc(10px + var(--g,0) * 30px) calc(var(--g,0) * 10px) var(--a);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:30px;height:30px;border:0;border-radius:50%;background:#fff;box-shadow:0 0 20px 6px var(--a)}
+.mlabel{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.5rem;min-height:1.6em}
+
+/* hold to forgive */
+.forgive{text-align:center}
+.hold{position:relative;width:170px;height:170px;margin:26px auto 12px;border:0;border-radius:50%;cursor:pointer;touch-action:none;user-select:none;
+  background:conic-gradient(var(--a) calc(var(--p,0) * 1%),#1f6f8b22 0);display:grid;place-items:center}
+.hold::before{content:"";position:absolute;inset:8px;border-radius:50%;background:#fff;box-shadow:inset 0 0 24px #1f6f8b22}
+.hold span{position:relative;font-family:'Instrument Serif',serif;font-style:italic;font-size:1.35rem;line-height:1.2;padding:0 16px}
+.ripple{position:absolute;left:50%;top:50%;width:170px;height:170px;border-radius:50%;border:2px solid var(--a);translate:-50% -50%;animation:rip 2.2s ease-out forwards;pointer-events:none}
+@keyframes rip{to{scale:6;opacity:0}}
+.thanks{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.8rem;opacity:0;transition:opacity 1.2s;min-height:3em}
+.thanks.on{opacity:1}
+footer{text-align:center;color:var(--mute);padding:20px 20px 60px;font-size:.9rem}
+@media (prefers-reduced-motion:reduce){#sky i,.star::before{animation:none}.ripple{animation-duration:.01s}}
+</style>
+</head>
+<body data-who="prajwal">
+<div id="sky" aria-hidden="true"></div>
+<main>
+  <nav class="who" aria-label="Choose who this is for"><div role="tablist">
+    <button role="tab" data-who="prajwal" aria-selected="true">Prajwal</button>
+    <button role="tab" data-who="unnathi" aria-selected="false">Unnathi</button>
+  </div></nav>
+
+  <div class="scene" id="scene"><div class="world" id="world">
+    <div class="layer"><div class="moon"></div></div>
+    <div class="layer"><div class="hill h3"></div><div class="hill h2"></div><div class="hill h1"></div></div>
+    <div class="layer" style="display:grid;place-items:center"><div class="hero-txt"><p id="hi">This is for</p><h1 id="name">Prajwal</h1><p id="tag"></p></div></div>
+  </div></div>
+
+  <section>
+    <h2>Six pearls I owe you</h2>
+    <p class="lead" id="starlead">Tap every pearl. Each one is something I should have said sooner.</p>
+    <div class="sky-box" id="box"><svg viewBox="0 0 100 100" preserveAspectRatio="none" id="lines"></svg></div>
+    <div class="note" id="note">Tap a glowing pearl…</div>
+    <p class="count" id="count">0 of 6 found</p>
+  </section>
+
+  <section>
+    <div class="lwrap">
+      <div class="card locked" id="card">
+        <h2 id="greet"></h2>
+        <p class="body" id="text"></p>
+        <div class="sign" id="sign"></div>
+      </div>
+      <div class="lock" id="lock">Find all six pearls<br>to open my letter</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="meter">
+      <h2>How sorry am I?</h2>
+      <input type="range" min="0" max="100" value="12" id="range" aria-label="How sorry I am">
+      <div class="mlabel" id="mlabel"></div>
+    </div>
+  </section>
+
+  <section class="forgive">
+    <h2>If you can forgive me</h2>
+    <p class="lead" style="margin-inline:auto">Press and hold the circle. No rush. I’ll wait.</p>
+    <button class="hold" id="hold" aria-label="Press and hold to forgive"><span>hold<br>here</span></button>
+    <div class="thanks" id="thanks" aria-live="polite"></div>
+  </section>
+  <footer id="foot"></footer>
+</main>
+
+<script>
+/* ✏️ Edit the words below, then save. */
+const D={
+ prajwal:{hi:"This is for",name:"Prajwal",tag:"My brother, who makes me feel special.",
+  stars:[["You make me feel special without even trying.",18,28],["You were patient when I wasn’t.",42,62],["You show up. Every single time.",62,25],["You laugh with me, never at me.",80,58],["You see the best in me.",30,82],["You’re my favourite person to have by my side.",88,18]],
+  greet:"Dear Prajwal,",
+  text:"I’m sorry. Not the quick kind you say just to move on, but the kind that stays with me until I say it properly.\n\nYou have always made me feel like I matter, like someone worth showing up for, and I didn’t treat that with the care it deserved. You never asked me to be perfect. You only gave me love, patience and your time.\n\nI’m grateful to have a brother like you. I’m ready to listen, to do better, and to make this right. Whatever you need from me, I’m here.",
+  sign:"With all my love",thanks:"Thank you, Prajwal. You have no idea what this means to me. 💛",
+  labels:["a little","quite a lot","really, really sorry","more than I can say","more than this bar can hold"]},
+ unnathi:{hi:"This is for",name:"Unnathi",tag:"My beloved friend, who means so much to me.",
+  stars:[["You listen without judging.",20,70],["You make ordinary days brighter.",38,30],["You stayed through my worst moods.",58,68],["You celebrate my small wins like they’re big.",75,28],["You feel like home.",88,62],["You are irreplaceable to me.",50,12]],
+  greet:"Dear Unnathi,",
+  text:"I’m sorry. You are one of the people who makes my world feel lighter, and I hurt that.\n\nYou’ve stood by me in ways I don’t always say thank you for, and you deserved better from me. I’m not asking you to forget it. I’m asking for a chance to show you who I am when I care properly.\n\nOur friendship means more to me than being right ever could. Whenever you’re ready, I’ll be here, with an open heart and a lot of gratitude.",
+  sign:"With all my love",thanks:"Thank you, Unnathi. My heart is so much lighter now. 💙",
+  labels:["a little","quite a lot","really, really sorry","more than I can say","more than this bar can hold"]}
+};
+const $=id=>document.getElementById(id), still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let who="prajwal",found=[],timer,unlocked=false,done=false;
+
+
+/* 3D parallax: follows finger or mouse */
+const scene=$("scene"),world=$("world");
+scene.addEventListener("pointermove",e=>{if(still)return;const r=scene.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  world.style.transform=`rotateY(${x*16}deg) rotateX(${-y*12}deg)`});
+scene.addEventListener("pointerleave",()=>world.style.transform="");
+
+function type(el,t){clearInterval(timer);if(still){el.textContent=t;return}
+  el.textContent="";let i=0;timer=setInterval(()=>{el.textContent+=t[i++];if(i>=t.length)clearInterval(timer)},24)}
+
+function build(){
+  const d=D[who];document.body.dataset.who=who;document.body.classList.remove("dawn");
+  $("name").textContent=d.name;$("tag").textContent=d.tag;$("greet").textContent=d.greet;$("sign").textContent=d.sign;
+  $("foot").textContent="Made with love, for "+d.name+".";
+  found=[];unlocked=false;done=false;
+  $("lines").innerHTML="";$("note").textContent="Tap a glowing pearl…";$("count").textContent="0 of 6 found";
+  $("card").classList.add("locked");$("lock").classList.remove("gone");$("text").textContent="";
+  $("thanks").textContent="";$("thanks").classList.remove("on");
+  document.querySelectorAll(".star").forEach(s=>s.remove());
+  d.stars.forEach(([t,x,y],i)=>{const b=document.createElement("button");b.className="star";
+    b.style.left=x+"%";b.style.top=y+"%";b.setAttribute("aria-label","Pearl "+(i+1));
+    b.onclick=()=>{ $("note").textContent=t;
+      if(!found.includes(i)){found.push(i);b.classList.add("found");
+        if(found.length>1){const p=d.stars[found[found.length-2]];const l=document.createElementNS("http://www.w3.org/2000/svg","line");
+          l.setAttribute("x1",p[1]);l.setAttribute("y1",p[2]);l.setAttribute("x2",x);l.setAttribute("y2",y);$("lines").appendChild(l)}
+        $("count").textContent=found.length+" of 6 found";
+        if(found.length===6){unlocked=true;$("count").textContent="All six found 🤍 My letter is open.";
+          $("card").classList.remove("locked");$("lock").classList.add("gone");
+          setTimeout(()=>{$("card").scrollIntoView({behavior:still?"auto":"smooth",block:"center"});type($("text"),d.text)},700)}}};
+    $("box").appendChild(b)});
+  setMeter($("range").value);
+}
+function setMeter(v){const d=D[who];$("range").style.setProperty("--p",v+"%");$("range").style.setProperty("--g",v/100);
+  $("mlabel").textContent=d.labels[Math.min(4,Math.floor(v/20.1))]}
+$("range").addEventListener("input",e=>setMeter(e.target.value));
+
+/* 3D tilt on letter */
+const card=$("card");
+card.addEventListener("pointermove",e=>{const r=card.getBoundingClientRect();
+  card.style.transform=`rotateY(${((e.clientX-r.left)/r.width-.5)*9}deg) rotateX(${-((e.clientY-r.top)/r.height-.5)*9}deg)`});
+card.addEventListener("pointerleave",()=>card.style.transform="");
+
+/* hold to forgive */
+const hold=$("hold");let raf,start=0;
+function step(t){if(!start)start=t;const p=Math.min(100,(t-start)/1800*100);hold.style.setProperty("--p",p);
+  if(p>=100){finish();return}raf=requestAnimationFrame(step)}
+function begin(e){if(done)return;e.preventDefault();start=0;raf=requestAnimationFrame(step)}
+function cancel(){if(done)return;cancelAnimationFrame(raf);hold.style.setProperty("--p",0)}
+hold.addEventListener("pointerdown",begin);["pointerup","pointerleave","pointercancel"].forEach(ev=>hold.addEventListener(ev,cancel));
+hold.addEventListener("keydown",e=>{if((e.key===" "||e.key==="Enter")&&!e.repeat)begin(e)});
+hold.addEventListener("keyup",cancel);
+function finish(){done=true;document.body.classList.add("dawn");
+  for(let i=0;i<3;i++)setTimeout(()=>{const r=document.createElement("i");r.className="ripple";hold.appendChild(r);setTimeout(()=>r.remove(),2300)},i*450);
+  hold.querySelector("span").innerHTML="thank<br>you";
+  $("thanks").textContent=D[who].thanks;$("thanks").classList.add("on");
+  if(navigator.vibrate)navigator.vibrate(60)}
+const reset=()=>{hold.style.setProperty("--p",0);hold.querySelector("span").innerHTML="hold<br>here"};
+
+document.querySelectorAll(".who button").forEach(b=>b.onclick=()=>{who=b.dataset.who;
+  document.querySelectorAll(".who button").forEach(x=>x.setAttribute("aria-selected",x===b));reset();build();
+  window.scrollTo({top:0,behavior:still?"auto":"smooth"})});
+build();
+</script>
+</body>
+</html>
